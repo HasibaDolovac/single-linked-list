@@ -1,0 +1,231 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node{
+	int data;
+	struct node *next;
+}NODE;
+
+NODE *first=NULL;
+NODE *last=NULL;
+NODE *temp=NULL;
+
+
+int isEmpty(){
+	if(first==NULL) return 1;
+	else return 0;
+}
+
+//kreiranje elemenata
+void create(int elem){
+	
+	//zauzimanje memorije
+	temp=(struct node*)malloc(sizeof(struct node));
+	
+	temp->data=elem;
+	temp->next=NULL;
+	
+	if(first==NULL){
+		first=temp;
+		last=temp;
+	}
+	
+	else{
+		last->next=temp;
+		last=temp;
+	}
+}
+//prikaz liste
+void display(){
+	temp=first;
+	
+	while(temp!=NULL){
+		printf("|%d|-->", temp->data);
+		temp=temp->next;
+	}
+	printf("NULL\n");
+}
+//ubacivanje posle zadatog elementa
+void insertAfter(int target, int elem){
+	
+	NODE *current=first;
+	if(first==NULL){
+		printf("lista je prazna!");
+		return;
+	}
+	
+	while(current !=NULL && current->data!=target){
+		current=current->next;
+	}
+	
+	if(current==NULL){
+		printf("\nu listi ne postoji ovaj element\n");
+	}
+	
+	temp=(struct node*)malloc(sizeof (struct node));
+	if(temp==NULL){
+		printf("greska prilikom alokacije memorije");
+		return;
+	}
+	
+	temp->data=elem;
+	temp->next=current->next;
+	current->next=temp;
+	
+	if(target == last){
+		last->next=temp;
+		last=temp;
+	}
+
+}
+
+//ubacivanje elemenata u listu pre zadatog elementa
+void insertBefore(int target, int elem){
+	NODE *current=first;
+	
+	if(first==NULL){
+		printf("lista je prazna/EMPTY");
+		return;
+	}
+	
+	while(current!=NULL && current->data!=target){
+		current=current->next;
+	}
+	
+	if(current==NULL){
+		printf("u listi ne postoji ovaj element");
+		return;
+	}
+	
+	temp=(struct node*)malloc(sizeof(struct node));
+	if(temp==NULL){
+		printf("greska prilikom alokacije memorije");
+		return;
+	}
+	temp->data=current->data;
+	temp->next=current->next;
+
+	current->data=elem;
+	current->next=temp;
+	
+	if(current==last){
+		last=temp;
+	}
+}
+
+void deleteAfter(int target){
+	NODE *current=first;
+	
+	if(first==NULL){
+		printf("lista je prazna");
+		return;
+	}
+	
+	while(current!=NULL && current->data!=target){
+		current=current->next;
+	}
+	
+	if(current==NULL){//prosao je kroz celu listu i nije pronasao trazeni element
+		printf("ovaj element ne postoji u listi");
+		return;
+	}
+	if (current->next == NULL) {//ako iza target-a ne postoji element, ne moze nista da obrise
+        printf("ne postoji element posle trazenog elementa\n");
+        return;
+    }
+	
+	temp=current->next;
+	current->next=temp->next;
+	temp->next=NULL;//da budemo sigurni da ovaj cvor vise nigde ne pokazuje
+	free(temp);
+	
+	if(temp==last){
+		last=current;
+	}
+}
+
+void deleteActual(int target){
+	NODE *current=first;
+	NODE *previous=NULL;
+	if(first==NULL){
+		printf("lista je prazna");
+		return;
+	}
+	
+	while(current!=NULL && current->data!=target){
+		previous=current;
+		current=current->next;
+	}
+	
+	if(current==NULL){
+		printf("ne postoji ovaj element u listi");
+		return;
+	}
+	
+	if(current==first){
+		first=first->next;
+		if(current==last){
+			last=NULL;
+		}
+	}
+	
+	else{
+		previous->next=current->next;
+		if(current==last){
+			last=previous;
+		}
+	}
+	
+}
+
+void deleteOnPosition(int pos){
+	
+	int count=1;
+	NODE *p, *q;
+	
+	p=first;
+	q=NULL;
+	
+	if(pos==1){
+		first=p->next;
+		free(p);
+		return;
+	}
+	while(count!=pos){
+		q=p;
+		p=p->next;
+		count++;
+	}
+	
+	q->next=p->next;
+	free(p);
+	
+}
+
+
+int main(){
+	create(5);
+	create(6);
+	create(7);
+	
+	display();
+	
+	
+	insertAfter(7,4);
+	display();
+	
+	insertBefore(4,3);
+	display();
+	
+	deleteAfter(5);
+	display();
+	
+	deleteActual(7);
+	display();
+	
+	deleteOnPosition(2);
+	display();
+	
+	return 0;
+}
