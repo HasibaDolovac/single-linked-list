@@ -36,7 +36,7 @@ void create(int elem){
 		last=temp;
 	}
 }
-//prikaz liste
+//print()
 void display(){
 	temp=first;
 	
