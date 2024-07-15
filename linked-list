@@ -46,7 +46,7 @@ void display(){
 	}
 	printf("NULL\n");
 }
-//ubacivanje posle zadatog elementa
+//dodavanje posle zadatog elementa
 void insertAfter(int target, int elem){
 	
 	NODE *current=first;
@@ -80,7 +80,7 @@ void insertAfter(int target, int elem){
 
 }
 
-//ubacivanje elemenata u listu pre zadatog elementa
+//dodavanje elemenata u listu pre zadatog elementa
 void insertBefore(int target, int elem){
 	NODE *current=first;
 	
