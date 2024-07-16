@@ -73,7 +73,7 @@ void insertAfter(int target, int elem){
 	temp->next=current->next;
 	current->next=temp;
 	
-	if(target == last){
+	if(current == last){
 		last->next=temp;
 		last=temp;
 	}
