@@ -1,0 +1,95 @@
+/* Napisati program kojim se svako pojavljivanje elementa el1 u listi zamenjuje elementom el2.
+ Napisati potprogram kojim se dodaje element na pocetak lancane liste.
+ Napisati program kojim se briše  element s pocetka lancane liste.*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node{
+	int data;
+	struct node *next;
+}NODE;
+
+NODE *first= NULL;
+NODE *last= NULL;
+NODE *temp= NULL;
+
+void create(int elem){
+	
+	temp=(struct node*)malloc(sizeof (struct node));
+	
+	if(temp==NULL){
+		printf("greska prilikom alokacije memorije");
+		return;
+	}
+	
+	temp->data=elem;
+	temp->next=NULL;
+	
+	if(first==NULL){
+		first=temp;
+		last=temp;
+	}
+	else{
+		last->next=temp;
+		last=temp;
+	}
+}
+
+void display(){
+	
+	temp=first;
+	printf("first-->");
+	while(temp!=NULL){
+		printf("|%d|-->",temp->data);
+		temp=temp->next;
+	}
+	printf("NULL\n");
+}
+
+void zameniElemente(int el1, int el2){
+	temp=first;
+	
+	while(temp!=NULL){
+		if(temp->data==el1){
+			temp->data=el2;
+		}
+		temp=temp->next;			
+	}	
+}
+void dodajNaPocetak(int elem){
+	temp=(struct node*)malloc(sizeof(struct node));
+	
+	if(temp==NULL){
+		printf("greska prilikom alokacije memorije");
+		return;
+	}
+	temp->next=first;
+	temp->data=elem;
+	first=temp;
+}
+void izbrisiPrvi(){
+	temp=first;
+	first=temp->next;
+	temp->next=NULL;
+	free(temp);	
+}
+
+int main(){
+	create(7);
+	create(6);
+	create(3);
+	create(4);
+	create(3);
+	display();
+	
+	zameniElemente(3,8);
+	display();
+	
+	dodajNaPocetak(1);
+	display();
+	
+	izbrisiPrvi();
+	display();
+	return 0;
+}
